@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mokshita Jain | Data and Web Analyst</title>
+<meta name="description" content="Mokshita Jain, data and web analyst. SQL, Python, Excel, Google Analytics. University of Arizona MIS graduate.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F4F6F5;
+    --surface: #FFFFFF;
+    --ink: #1D2327;
+    --muted: #5A646B;
+    --line: #D9DEDC;
+    --accent: #3B3A8E;      /* dusk indigo: links, focus, selected controls */
+    --on-accent: #FFFFFF;
+    --bar: #6E8F74;         /* saguaro sage: funnel bars */
+    --bar-soft: #DCE6DD;
+    --leak: #B5473A;        /* only for the checkout drop-off */
+    --gain: #2F7A4F;        /* only for what-if gains */
+    --serif: "Newsreader", Georgia, serif;
+    --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161A1D; --surface: #1E2327; --ink: #E8ECEA; --muted: #A2ABB1; --line: #333B40;
+      --accent: #A9A7F2; --on-accent: #16152E; --bar: #8DB394; --bar-soft: #2A3A2E;
+      --leak: #E88A7E; --gain: #8FD4A8;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  button { font: inherit; cursor: pointer; }
+  .wrap { max-width: 980px; margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+
+  /* Nav */
+  header.nav { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 16px; }
+  .nav .name { font-family: var(--serif); font-size: 20px; font-weight: 600; color: var(--ink); text-decoration: none; }
+  .nav nav { display: flex; gap: 22px; align-items: center; font-size: 15px; }
+  .nav nav a { color: var(--muted); text-decoration: none; }
+  .nav nav a:hover { color: var(--ink); }
+  .nav nav a.resume { color: var(--on-accent); background: var(--accent); padding: 7px 14px; border-radius: 6px; font-weight: 500; }
+
+  /* Hero */
+  .hero { padding-top: 64px; padding-bottom: 48px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 52px; align-items: start; }
+  .hero h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(44px, 6vw, 64px); line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 20px; }
+  .hero .lede { font-size: 19px; margin: 0 0 20px; max-width: 30em; }
+  .hero .facts { margin: 0 0 24px; padding: 0; list-style: none; color: var(--muted); font-size: 15px; }
+  .hero .facts li { padding: 2px 0; }
+  .hero .links { display: flex; flex-wrap: wrap; gap: 18px; font-size: 15px; font-weight: 500; margin-bottom: 28px; }
+  .hero .try { font-size: 15px; color: var(--muted); max-width: 26em; margin: 0; }
+
+  /* Interactive funnel */
+  figure.funnel { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 24px 24px 18px; }
+  .funnel h2 { font-family: var(--serif); font-weight: 500; font-size: 22px; line-height: 1.3; margin: 0 0 4px; min-height: 2.6em; }
+  .funnel .sub { color: var(--muted); font-size: 14px; margin: 0 0 16px; }
+  .seg { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 6px; }
+  .seg-label { font-size: 13px; color: var(--muted); margin: 10px 0 6px; }
+  .seg button { border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 4px 12px; font-size: 13px; }
+  .seg button:hover { border-color: var(--accent); }
+  .seg button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .steps { margin-top: 18px; }
+  .step { margin-bottom: 12px; }
+  .step .row { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; margin-bottom: 5px; }
+  .step .row b { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .step .row .pct { color: var(--muted); font-weight: 400; margin-left: 6px; }
+  .track { height: 24px; background: var(--bar-soft); border-radius: 4px; overflow: hidden; }
+  .fill { height: 100%; width: 0; background: var(--bar); border-radius: 4px; transition: width .7s cubic-bezier(.2,.7,.2,1); }
+  .drop { font-size: 12.5px; color: var(--muted); margin: 3px 0 0; font-variant-numeric: tabular-nums; }
+  .leak { margin: 2px 0 14px; padding-left: 12px; border-left: 3px solid var(--leak); font-size: 14px; }
+  .leak strong { color: var(--leak); font-weight: 600; }
+
+  .whatif { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 16px; }
+  .whatif label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+  .whatif input[type=range] { width: 100%; accent-color: var(--accent); }
+  .whatif .scale { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .whatif .result { margin: 10px 0 0; font-size: 15px; font-variant-numeric: tabular-nums; }
+  .whatif .result strong { color: var(--gain); font-weight: 600; }
+  .funnel figcaption { margin-top: 14px; font-size: 12.5px; color: var(--muted); }
+
+  /* Sections */
+  section { padding-top: 56px; padding-bottom: 56px; border-top: 1px solid var(--line); }
+  section > .wrap > h2 { font-family: var(--serif); font-weight: 500; font-size: 32px; letter-spacing: -0.01em; margin: 0 0 22px; }
+
+  /* Skill finder */
+  .finder { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin-bottom: 36px; }
+  .finder p { margin: 0 0 10px; font-size: 15px; }
+  .finder .status { margin: 10px 0 0; font-size: 13px; color: var(--muted); min-height: 1.4em; }
+  [data-skills] { transition: opacity .25s ease; }
+  body.filtering [data-skills]:not(.match) { opacity: .28; }
+  body.filtering li.match { background: color-mix(in srgb, var(--accent) 9%, transparent); border-radius: 4px; }
+
+  /* Experience timeline */
+  .role { display: grid; grid-template-columns: 170px 1fr; gap: 28px; padding-bottom: 32px; }
+  .role:last-child { padding-bottom: 0; }
+  .role .when { color: var(--muted); font-size: 15px; font-variant-numeric: tabular-nums; padding-top: 3px; }
+  .role .body { border-left: 2px solid var(--line); padding-left: 24px; position: relative; }
+  .role .body::before { content: ""; position: absolute; left: -7px; top: 9px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--bar); }
+  .role h3 { margin: 0; font-size: 19px; font-weight: 600; }
+  .role .org { color: var(--muted); margin: 2px 0 10px; font-size: 15px; }
+  ul.points { margin: 0; padding-left: 20px; }
+  ul.points li { margin: 0 0 6px -6px; padding: 1px 6px; max-width: 46em; }
+
+  /* Projects */
+  .project { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 28px; margin-bottom: 20px; }
+  .project h3 { font-family: var(--serif); font-weight: 500; font-size: 25px; margin: 0 0 4px; }
+  .project .meta { color: var(--muted); font-size: 14px; margin: 0 0 14px; }
+  .project .q { font-size: 17px; margin: 0 0 18px; max-width: 42em; }
+  .findings { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 28px; margin: 0 0 20px; padding: 0; list-style: none; }
+  .findings li { border-top: 2px solid var(--bar); padding-top: 10px; font-size: 15px; }
+  .findings li b { display: block; font-family: var(--serif); font-size: 28px; font-weight: 500; line-height: 1.1; margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; padding: 0; list-style: none; }
+  .tags li { font-size: 13px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px; }
+  .project .actions { display: flex; flex-wrap: wrap; gap: 20px; font-weight: 500; font-size: 15px; }
+  details.sql { margin: 0 0 16px; }
+  details.sql summary { cursor: pointer; font-size: 15px; font-weight: 500; color: var(--accent); }
+  details.sql pre { margin: 10px 0 0; padding: 14px 16px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; font-size: 13px; line-height: 1.5; }
+  .project.small { padding: 24px 28px; }
+  .project.small h3 { font-size: 21px; }
+
+  /* Skills */
+  dl.skills { display: grid; grid-template-columns: 200px 1fr; gap: 12px 28px; margin: 0; }
+  dl.skills dt { font-weight: 600; }
+  dl.skills dd { margin: 0; color: var(--muted); }
+
+  .now { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .now h3 { font-size: 17px; margin: 0 0 8px; }
+  .now p { margin: 0; color: var(--muted); }
+
+  .contact p { max-width: 36em; margin: 0 0 20px; }
+  .contact .big { font-family: var(--serif); font-size: clamp(24px, 4vw, 34px); }
+  .contact .others { display: flex; flex-wrap: wrap; gap: 22px; font-weight: 500; }
+  .copy { border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 6px; padding: 4px 12px; font-size: 14px; margin-left: 12px; vertical-align: middle; }
+  footer { padding: 28px 0 40px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
+
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; gap: 36px; padding-top: 40px; }
+    .hero h1 { font-size: 44px; }
+    .role { grid-template-columns: 1fr; gap: 6px; }
+    .findings { grid-template-columns: 1fr; }
+    dl.skills { grid-template-columns: 1fr; gap: 2px; }
+    dl.skills dd { margin-bottom: 12px; }
+    .now { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .wrap { padding-left: 16px; padding-right: 16px; }
+    .nav nav a:not(.resume) { display: none; }
+    figure.funnel, .project { padding: 20px 16px; }
+    .copy { margin: 8px 0 0; display: block; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .fill, [data-skills] { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="name" href="#top">Mokshita Jain</a>
+    <nav aria-label="Main">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+      <a class="resume" href="resume.pdf">Resume</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <h1>Mokshita Jain</h1>
+      <p class="lede">Data and web analyst. I clean messy data, find where things break, and explain it to the people who need to fix it.</p>
+      <ul class="facts">
+        <li>B.S.B.A. in Management Information Systems, University of Arizona, 2026</li>
+        <li>Two years on the University of Arizona IT web team</li>
+        <li>Based in Tucson, Arizona, and open to analyst roles anywhere in the US</li>
+      </ul>
+      <div class="links">
+        <a href="mailto:mokshitajd.a@gmail.com">Email me</a>
+        <a href="https://www.linkedin.com/in/YOUR-LINKEDIN-HANDLE">LinkedIn</a>
+        <a href="https://github.com/YOUR-GITHUB-USERNAME">GitHub</a>
+      </div>
+      <p class="try">The chart uses real results from one of my projects. Switch between devices and traffic sources, then drag the slider to see what fixing checkout would be worth.</p>
+    </div>
+
+    <figure class="funnel" aria-labelledby="funnel-title">
+      <h2 id="funnel-title" aria-live="polite">Of 61,252 shoppers who viewed a product, 4,419 bought.</h2>
+      <p class="sub">Google Merchandise Store, Nov 2020 to Jan 2021. My SQL analysis in BigQuery.</p>
+
+      <p class="seg-label" id="seg-label">Show shoppers by</p>
+      <div class="seg" role="group" aria-labelledby="seg-label" id="seg-device">
+        <button type="button" data-seg="all" aria-pressed="true">Everyone</button>
+        <button type="button" data-seg="desktop" aria-pressed="false">Desktop</button>
+        <button type="button" data-seg="mobile" aria-pressed="false">Mobile</button>
+        <button type="button" data-seg="tablet" aria-pressed="false">Tablet</button>
+      </div>
+      <div class="seg" role="group" aria-label="Traffic source" id="seg-channel">
+        <button type="button" data-seg="organic" aria-pressed="false">Google search</button>
+        <button type="button" data-seg="direct" aria-pressed="false">Direct</button>
+        <button type="button" data-seg="referral" aria-pressed="false">Referral links</button>
+        <button type="button" data-seg="paid" aria-pressed="false">Paid ads</button>
+      </div>
+
+      <div class="steps" id="steps"></div>
+
+      <div class="whatif">
+        <label for="target">What if more shoppers finished checkout?</label>
+        <input type="range" id="target" min="45" max="80" step="0.5" value="50">
+        <div class="scale"><span id="scale-min">Today: 45.5%</span><span>80%</span></div>
+        <p class="result" id="result" aria-live="polite"></p>
+      </div>
+      <figcaption>Unique users at each step. Revenue uses the store's average of $82 per buyer. <a href="#funnel-project">How I built this</a></figcaption>
+    </figure>
+  </div>
+
+  <section id="experience">
+    <div class="wrap">
+      <h2>Experience</h2>
+
+      <div class="finder">
+        <p>Looking for a specific skill? Pick one to see where I've used it.</p>
+        <div class="seg" role="group" aria-label="Skills" id="finder">
+          <button type="button" data-skill="sql" aria-pressed="false">SQL</button>
+          <button type="button" data-skill="python" aria-pressed="false">Python</button>
+          <button type="button" data-skill="excel" aria-pressed="false">Excel</button>
+          <button type="button" data-skill="ga" aria-pressed="false">Google Analytics</button>
+          <button type="button" data-skill="cleaning" aria-pressed="false">Data cleaning</button>
+          <button type="button" data-skill="modeling" aria-pressed="false">Modeling</button>
+          <button type="button" data-skill="qa" aria-pressed="false">QA testing</button>
+          <button type="button" data-skill="pm" aria-pressed="false">Project management</button>
+          <button type="button" data-skill="stakeholders" aria-pressed="false">Working with stakeholders</button>
+          <button type="button" data-skill="cms" aria-pressed="false">WordPress and Drupal</button>
+        </div>
+        <p class="status" id="finder-status" aria-live="polite"></p>
+      </div>
+
+      <article class="role">
+        <div class="when">May 2024 to Jul 2026</div>
+        <div class="body">
+          <h3>Web Analyst</h3>
+          <p class="org">University of Arizona Information Technology Services, Tucson</p>
+          <ul class="points">
+            <li data-skills="pm excel stakeholders">Directed 25 site redesigns and Pantheon cloud migrations for sites serving 10,000+ daily visitors, coordinating scope and deadlines in Jira and Excel.</li>
+            <li data-skills="qa">Cut QA time per site from about an hour to 15 minutes by standardizing testing across 400+ sites, saving the team about 20 hours a month and fixing 100+ issues.</li>
+            <li data-skills="cms ga">Built, updated and maintained 70+ Arizona.edu websites on Drupal and WordPress, keeping them accessible and tracking traffic in Google Analytics.</li>
+            <li data-skills="stakeholders">Worked with academic departments as clients, turning their requests into site plans and cutting new faculty site setup time by 25%.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="role">
+        <div class="when">Jan 2026 to May 2026</div>
+        <div class="body">
+          <h3>Data Analyst, Capstone Practicum</h3>
+          <p class="org">Weiss Brown with the University of Arizona, Phoenix</p>
+          <ul class="points">
+            <li data-skills="python excel cleaning">Cleaned and combined 20,000+ billing records spanning five years into an analysis-ready dataset using Python (pandas) and Excel.</li>
+            <li data-skills="python modeling">Built and compared three pricing models (linear regression, random forest, XGBoost) on a 4-person team, using 10 features that capture deal complexity.</li>
+            <li data-skills="modeling">The regression model explained 75% of fee variation (R-squared = 0.75), showing partners which deal factors drive legal fees most.</li>
+            <li data-skills="stakeholders">Co-designed a fee-quoting tool prototype and presented pricing recommendations to firm leadership.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <h2>Projects</h2>
+
+      <article class="project" id="funnel-project" data-skills="sql ga cleaning">
+        <h3>Where do online shoppers drop off?</h3>
+        <p class="meta">E-commerce funnel analysis, October 2026</p>
+        <p class="q">Using Google's public Google Analytics 4 data from its merchandise store, I wrote SQL in BigQuery to trace 270,000 visitors from product view to purchase, then split the funnel by device, traffic source and product category.</p>
+        <ul class="findings">
+          <li><b>7.2%</b>of product viewers made a purchase.</li>
+          <li><b>54.5%</b>of shoppers who started checkout left without buying, the most valuable group to win back.</li>
+          <li><b>7.5% vs 7.0%</b>mobile and desktop converted about the same, so device is not the cause.</li>
+          <li><b>4.8% vs 8.1%</b>paid-ad visitors converted lowest; referral visitors converted best.</li>
+        </ul>
+        <details class="sql">
+          <summary>See the SQL behind the funnel</summary>
+<pre><code>WITH steps AS (
+  SELECT
+    COUNT(DISTINCT IF(event_name = 'view_item', user_pseudo_id, NULL))      AS viewed,
+    COUNT(DISTINCT IF(event_name = 'add_to_cart', user_pseudo_id, NULL))    AS added_to_cart,
+    COUNT(DISTINCT IF(event_name = 'begin_checkout', user_pseudo_id, NULL)) AS started_checkout,
+    COUNT(DISTINCT IF(event_name = 'purchase', user_pseudo_id, NULL))       AS purchased
+  FROM `bigquery-public-data.ga4_obfuscated_sample_ecommerce.events_*`
+)
+SELECT
+  viewed, added_to_cart, started_checkout, purchased,
+  ROUND(100 * purchased / started_checkout, 1) AS pct_checkout_to_purchase,
+  ROUND(100 * purchased / viewed, 1)           AS pct_overall
+FROM steps;</code></pre>
+        </details>
+        <ul class="tags" aria-label="Tools">
+          <li>SQL</li><li>Google BigQuery</li><li>Google Analytics 4</li><li>Funnel analysis</li>
+        </ul>
+        <div class="actions">
+          <a href="https://github.com/YOUR-GITHUB-USERNAME/ga4-ecommerce-funnel-analysis">See all the SQL and write-up on GitHub</a>
+        </div>
+      </article>
+
+      <article class="project small" data-skills="cms stakeholders">
+        <h3>Restoring Relatives website</h3>
+        <p class="meta">Volunteer web project, October 2026 to present</p>
+        <p class="q">Building the first website for a new Native American-led organization in WordPress, as its only developer. I gathered requirements from the founder and turned his goals into the site's structure, pages and navigation.</p>
+        <ul class="tags" aria-label="Tools">
+          <li>WordPress</li><li>HTML</li><li>Requirements gathering</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <h2>Skills</h2>
+      <dl class="skills">
+        <dt>Data and analytics</dt>
+        <dd>SQL (BigQuery, MySQL), Python (pandas), Excel (pivot tables, XLOOKUP), data cleaning, ETL, regression analysis, funnel analysis</dd>
+        <dt>Visualization and reporting</dt>
+        <dd>Power BI, Tableau, Google Analytics 4, dashboards, KPI reporting</dd>
+        <dt>Web and CMS</dt>
+        <dd>Drupal, WordPress, Pantheon, HTML, site migrations, web accessibility, QA testing</dd>
+        <dt>Tools and methods</dt>
+        <dd>Jira, Microsoft Office, Microsoft Visio, Agile/Scrum, requirements gathering, stakeholder communication</dd>
+        <dt>Education</dt>
+        <dd>University of Arizona, Eller College of Management. B.S.B.A. in Management Information Systems, minor in Public Relations. Coursework in database management, systems analysis and design, and analytical methods for business.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section id="now">
+    <div class="wrap">
+      <h2>What I'm working on now</h2>
+      <div class="now">
+        <div>
+          <h3>A dashboard for the funnel analysis</h3>
+          <p>Turning the SQL results into an interactive dashboard, and cleaning product category labels so purchase rates by category can be compared.</p>
+        </div>
+        <div>
+          <h3>Launching Restoring Relatives</h3>
+          <p>Finishing the site, then measuring visits and inquiries with Google Analytics 4 to report back to the founder.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <h2>Contact</h2>
+      <p>I'm looking for data, business systems and web analyst roles. The fastest way to reach me is email.</p>
+      <p><a class="big" href="mailto:mokshitajd.a@gmail.com">mokshitajd.a@gmail.com</a><button type="button" class="copy" id="copy">Copy email</button></p>
+      <div class="others">
+        <a href="https://www.linkedin.com/in/YOUR-LINKEDIN-HANDLE">LinkedIn</a>
+        <a href="https://github.com/YOUR-GITHUB-USERNAME">GitHub</a>
+        <a href="resume.pdf">Resume (PDF)</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Mokshita Jain, 2026</div>
+</footer>
+
+<script>
+  // Funnel numbers come straight from my BigQuery results (unique users per step).
+  const DATA = {
+    all:      { label: "shoppers",                         v: [61252, 12545, 9715, 4419] },
+    desktop:  { label: "desktop shoppers",                 v: [36323, 7384, 5665, 2541] },
+    mobile:   { label: "mobile shoppers",                  v: [24810, 5142, 3968, 1851] },
+    tablet:   { label: "tablet shoppers",                  v: [1443, 276, 219, 97] },
+    organic:  { label: "shoppers from Google search",      v: [24077, 4508, 3298, 1323] },
+    direct:   { label: "shoppers who came directly",       v: [16492, 3338, 2430, 1054] },
+    referral: { label: "shoppers from referral links",     v: [12730, 2704, 2099, 1026] },
+    paid:     { label: "shoppers from paid ads",           v: [3156, 561, 390, 152] }
+  };
+  const STEPS = ["Viewed a product", "Added to cart", "Started checkout", "Purchased"];
+  const REV_PER_BUYER = 82;
+  const fmt = n => n.toLocaleString("en-US");
+  const pct = (a, b) => (100 * a / b).toFixed(1);
+
+  const stepsEl = document.getElementById("steps");
+  const title = document.getElementById("funnel-title");
+  const slider = document.getElementById("target");
+  const result = document.getElementById("result");
+  const scaleMin = document.getElementById("scale-min");
+  let current = "all";
+
+  // Build the four steps once; later updates only change numbers and widths.
+  stepsEl.innerHTML = STEPS.map((name, i) => `
+    ${i === 3 ? '<p class="leak" id="leak"></p>' : ''}
+    <div class="step">
+      <div class="row"><span>${name}</span><b><span id="n${i}"></span><span class="pct" id="p${i}"></span></b></div>
+      <div class="track"><div class="fill" id="f${i}"></div></div>
+      ${i > 0 && i < 3 ? `<p class="drop" id="d${i}"></p>` : ''}
+    </div>`).join("");
+
+  function render() {
+    const d = DATA[current], v = d.v;
+    title.textContent = `Of ${fmt(v[0])} ${d.label} who viewed a product, ${fmt(v[3])} bought.`;
+    v.forEach((n, i) => {
+      document.getElementById("n" + i).textContent = fmt(n);
+      document.getElementById("p" + i).textContent = i ? ` (${pct(n, v[0])}%)` : "";
+      document.getElementById("f" + i).style.width = (100 * n / v[0]) + "%";
+    });
+    document.getElementById("d1").textContent = `${pct(v[1], v[0])}% of viewers added something to cart`;
+    document.getElementById("d2").textContent = `${pct(v[2], v[1])}% of carts moved to checkout`;
+    const done = v[3] / v[2];
+    document.getElementById("leak").innerHTML =
+      `<strong>${(100 - 100 * done).toFixed(1)}% left during checkout.</strong> These shoppers were closest to buying.`;
+    const today = 100 * done;
+    slider.min = Math.floor(today * 2) / 2;
+    if (+slider.value < +slider.min) slider.value = slider.min;
+    scaleMin.textContent = `Today: ${today.toFixed(1)}%`;
+    whatIf();
+  }
+
+  function whatIf() {
+    const v = DATA[current].v;
+    const target = +slider.value / 100;
+    const extra = Math.max(0, Math.round(v[2] * target - v[3]));
+    const money = Math.round(extra * REV_PER_BUYER / 100) * 100;
+    slider.setAttribute("aria-valuetext", `${slider.value}% checkout completion`);
+    result.innerHTML = extra === 0
+      ? `Drag right to raise checkout completion above today's rate.`
+      : `At ${(+slider.value).toFixed(1)}% completion: <strong>${fmt(extra)} more buyers, about $${fmt(money)}</strong> in three months.`;
+  }
+
+  document.querySelectorAll("#seg-device button, #seg-channel button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      current = btn.dataset.seg;
+      document.querySelectorAll("#seg-device button, #seg-channel button")
+        .forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
+      render();
+    });
+  });
+  slider.addEventListener("input", whatIf);
+
+  // Grow the bars once on load (skipped when reduced motion is on, since widths then apply instantly).
+  requestAnimationFrame(() => requestAnimationFrame(render));
+
+  // Skill finder: dims everything that doesn't use the chosen skill.
+  const finderBtns = document.querySelectorAll("#finder button");
+  const status = document.getElementById("finder-status");
+  finderBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const on = btn.getAttribute("aria-pressed") !== "true";
+      finderBtns.forEach(b => b.setAttribute("aria-pressed", String(on && b === btn)));
+      const items = document.querySelectorAll("[data-skills]");
+      items.forEach(el => el.classList.toggle("match", on && el.dataset.skills.split(" ").includes(btn.dataset.skill)));
+      document.body.classList.toggle("filtering", on);
+      const count = document.querySelectorAll("[data-skills].match").length;
+      status.textContent = on ? `${btn.textContent}: ${count} ${count === 1 ? "place" : "places"} highlighted below. Pick it again to clear.` : "";
+    });
+  });
+
+  // Copy email
+  const copyBtn = document.getElementById("copy");
+  copyBtn.addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText("mokshitajd.a@gmail.com"); copyBtn.textContent = "Copied"; }
+    catch { copyBtn.textContent = "Select and copy the address"; }
+    setTimeout(() => copyBtn.textContent = "Copy email", 2000);
+  });
+</script>
+</body>
+</html>
